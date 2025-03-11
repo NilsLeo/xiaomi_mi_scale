@@ -18,7 +18,18 @@ import Xiaomi_Scale_Body_Metrics
 DEFAULT_DEBUG_LEVEL = "INFO"
 VERSION = "0.3.5"
 
+# Configure logging
+logging.basicConfig(
+    format='%(asctime)s - (%(levelname)s) %(message)s',
+    level=DEFAULT_DEBUG_LEVEL,
+    datefmt='%Y-%m-%d %H:%M:%S',
+    filename='/data/log.log',
+    filemode='a'
+)
 
+# Prevent bleak log flooding
+bleak_logger = logging.getLogger("bleak")
+bleak_logger.setLevel(logging.INFO)
 
 # User Config
 class USER:
@@ -124,7 +135,13 @@ try:
             DEBUG_LEVEL = data["DEBUG_LEVEL"]
             if DEBUG_LEVEL not in ('CRITICAL','ERROR','WARNING','INFO','DEBUG','NOTSET'):
                 DEBUG_LEVEL = DEFAULT_DEBUG_LEVEL
-                logging.basicConfig(format='%(asctime)s - (%(levelname)s) %(message)s', level=DEBUG_LEVEL, datefmt='%Y-%m-%d %H:%M:%S')
+                logging.basicConfig(
+                    format='%(asctime)s - (%(levelname)s) %(message)s',
+                    level=DEBUG_LEVEL,
+                    datefmt='%Y-%m-%d %H:%M:%S',
+                    filename='/data/log.log',
+                    filemode='a'
+                )
                 logging.info(f"-------------------------------------")
                 logging.info(f"Starting Xiaomi mi Scale v{VERSION}...")
                 logging.info(f"Loading Config From Options.json...")
